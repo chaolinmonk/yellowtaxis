@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Taxis Amarillos NYC - Presentación de Informe</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow: #F7C600;
+  --black: #0A0A0A;
+  --dark: #111111;
+  --dark2: #181818;
+  --dark3: #202020;
+  --gray: #888;
+  --white: #F5F5F0;
+  --checker: #1C1C1C;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: "DM Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Navegación y Header */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(10,10,10,0.93);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+}
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 1px;
+  color: var(--yellow);
+}
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+.nav-links a {
+  color: var(--gray);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+.nav-links a:hover {
+  color: var(--yellow);
+}
+
+/* Contenedor de diapositivas */
+section {
+  width: 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 60px 40px 60px;
+  background: var(--black);
+  overflow: hidden;
+}
+
+/* Efecto de fondo de Taxis de NYC (Ajedrezado sutil) */
+section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: linear-gradient(rgba(247, 198, 0, 0.01) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(247, 198, 0, 0.01) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Contenido de cada Slide */
+.slide-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Tipografías y Textos */
+h1.title-large {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px;
+  line-height: 1.0;
+  color: var(--yellow);
+  margin-bottom: 10px;
+}
+.slide-tag {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--yellow);
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+h2.slide-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  letter-spacing: 1px;
+  color: var(--white);
+  margin-bottom: 25px;
+  border-left: 5px solid var(--yellow);
+  padding-left: 15px;
+}
+p.slide-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #CCC;
+  max-width: 800px;
+  margin-bottom: 30px;
+}
+
+/* Grid de contenido para mostrar detalles */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+.card {
+  background: var(--dark2);
+  border: 1px solid #222;
+  border-radius: 6px;
+  padding: 25px;
+  position: relative;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.card:hover {
+  border-color: var(--yellow);
+}
+.card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  color: var(--yellow);
+  margin-bottom: 10px;
+}
+.card p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #AAA;
+}
+
+/* Diseño especial para Arquitectura (Texto largo arriba, Imagen grande abajo) */
+.architecture-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+.architecture-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #DDD;
+  margin-bottom: 20px;
+  background: var(--dark);
+  padding: 20px;
+  border-radius: 6px;
+  border-left: 4px solid var(--yellow);
+}
+.architecture-image-container {
+  flex-grow: 1;
+  width: 100%;
+  min-height: 250px;
+  background: var(--dark2);
+  border: 2px dashed #444;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.architecture-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Contenedores de Imagen vacías solicitadas */
+.image-placeholder {
+  width: 100%;
+  height: 180px;
+  background: var(--dark3);
+  border: 1px dashed #555;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+}
+.image-placeholder img {
+  width: auto;
+  height: auto;
+}
+
+/* Widget flotante de QR solicitado */
+.floating-qr-widget {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 200;
+  background: var(--dark2);
+  border: 2px solid var(--yellow);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 110px;
+  height: 135px;
+}
+.floating-qr-widget .qr-container {
+  width: 85px;
+  height: 85px;
+  background: #FFF;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.floating-qr-widget .qr-container img {
+  width: 100%;
+  height: 100%;
+}
+.floating-qr-widget span {
+  font-size: 10px;
+  color: var(--yellow);
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* Panel para el Iframe del Dashboard de Looker Studio */
+.dashboard-wrapper {
+  width: 100%;
+  height: calc(100vh - 140px);
+  background: #111;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+.dashboard-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Indicadores de navegación lateral (Dots) */
+.dots-nav {
+  position: fixed;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #333;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+.dot.active, .dot:hover {
+  background: var(--yellow);
+  transform: scale(1.3);
+}
+
+/* Footer / Meta info */
+.slide-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 60px;
+  font-size: 11px;
+  color: var(--gray);
+  display: flex;
+  gap: 30px;
+}
+.slide-footer span strong {
+  color: var(--white);
+}
+</style>
+</head>
+<body>
+
+<!-- Navegación Fija Superior -->
+<nav>
+  <div class="logo">NYC TAXI PIPELINE ★</div>
+  <div class="nav-links">
+    <a href="#inicio">Inicio</a>
+    <a href="#arquitectura">Arquitectura</a>
+    <a href="#ingesta">Ingesta</a>
+    <a href="#transformacion">Transformación</a>
+    <a href="#control">Control</a>
+    <a href="#optimizacion">Optimización</a>
+    <a href="#dashboard-slide">Dashboard Live</a>
+    <a href="#conclusiones">Conclusiones</a>
+  </div>
+</nav>
+
+<!-- WIDGET FLOTANTE QR (Elemento img src vacío, como solicitaste) -->
+<div class="floating-qr-widget">
+  <div class="qr-container">
+    <img src="qr_bigdata.png" alt="Código QR del Proyecto">
+  </div>
+  <span>Escanear QR</span>
+</div>
+
+<!-- Indicadores de Slide Laterales -->
+<div class="dots-nav">
+  <div class="dot active" onclick="location.hash='inicio'"></div>
+  <div class="dot" onclick="location.hash='arquitectura'"></div>
+  <div class="dot" onclick="location.hash='ingesta'"></div>
+  <div class="dot" onclick="location.hash='transformacion'"></div>
+  <div class="dot" onclick="location.hash='control'"></div>
+  <div class="dot" onclick="location.hash='optimizacion'"></div>
+  <div class="dot" onclick="location.hash='dashboard-slide'"></div>
+  <div class="dot" onclick="location.hash='conclusiones'"></div>
+</div>
+
+
+<!-- SLIDE 1: PORTADA E INTRODUCCIÓN -->
+<section id="inicio">
+  <div class="slide-container">
+    <div class="slide-tag">Evaluación Parcial 3 · Big Data</div>
+    <h1 class="title-large" style="font-size: 90px;">Pipeline de Taxis Amarillos NYC</h1>
+    <h2 style="color: var(--yellow); font-family: 'DM Sans'; font-weight: 300; font-size: 22px; margin-bottom: 20px;">
+      Implementación de una Arquitectura Robustecida Batch y Streaming
+    </h2>
+    <p class="slide-desc">
+      Este informe describe la implementación de una arquitectura de procesamiento batch y streaming para datos de NYC Yellow Taxi. Debido a la inexistencia de una fuente pública de eventos en tiempo real, se simuló el streaming mediante la reproducción controlada de archivos históricos Parquet. La solución integra eficientemente Google Cloud Storage, Pub/Sub, Compute Engine, BigQuery y Looker Studio.
+    </p>
+    <div style="margin-top: 10px; font-size: 14px; color: #AAA;">
+      <p><strong>Integrante:</strong> Diego Quioza</p>
+      <p><strong>Profesor:</strong> Andrés Alexis Leiva Hernández</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>Diapositiva <strong>01</strong> de 08</span>
+    <span>Big Data · Duoc UC</span>
+  </div>
+</section>
+
+
+<!-- SLIDE 2: ARQUITECTURA (Texto largo arriba, espacio grande abajo para imagen) -->
+<section id="arquitectura">
+  <div class="slide-container architecture-layout">
+    <div class="slide-tag">Componente 01</div>
+    <h2 class="slide-title">Arquitectura del Sistema de Datos</h2>
+    
+    <div class="architecture-text">
+      La arquitectura desarrollada implementa un flujo de procesamiento de datos en línea basado en eventos utilizando los servicios centrales de Google Cloud Platform (GCP). El punto de entrada corresponde a un webhook desarrollado en ExpressJS, el cual expone un endpoint REST de alto rendimiento para recibir información de viajes de taxi en tiempo real. Con fines de demostración y validación rigurosa, los datos son inyectados desde un formulario web alojado por el mismo servidor, simulando con precisión la llegada constante de eventos. Una vez recibido un evento, el servidor realiza un robusto proceso de validación estructural y lógica que verifica la existencia de campos obligatorios, consistencia cronológica de las fechas y validez de rangos numéricos. Posteriormente, el registro se enriquece calculando métricas de negocio críticas como la duración exacta del viaje, la tarifa cobrada por milla, el porcentaje de propina otorgado y resolviendo las zonas geográficas mediante el mapeo del archivo taxi_zone_lookup.csv. Los eventos íntegros se publican en un tópico de Pub/Sub con suscripción de streaming nativa hacia BigQuery, mientras que los erróneos se aíslan automáticamente en una cola Dead Letter para auditoría.
+    </div>
+
+    <!-- Contenedor Grande para la imagen de Arquitectura con src vacío -->
+    <div class="architecture-image-container">
+      <img src="arquitectura.png" alt="Diagrama de Arquitectura de Big Data">
+      <div style="position: absolute; color: #666; font-size: 13px;"></div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>Diapositiva <strong>02</strong> de 08</span>
+    <span>1. Arquitectura</span>
+  </div>
+</section>
+
+
+<!-- SLIDE 3: INGESTA DE DATOS (IL 3.1) -->
+<section id="ingesta">
+  <div class="slide-container">
+    <div class="slide-tag">Componente 02 · IL 3.1</div>
+    <h2 class="slide-title">Ingesta de Datos en Tiempo Real</h2>
+    <p class="slide-desc">
+      Estrategia orientada a eventos para capturar de manera segura y escalable cada transacción originada por los vehículos de la flota de NYC.
+    </p>
+    
+    <div class="content-grid">
+      <div class="card">
+        <h3>API REST de Entrada</h3>
+        <p>Se crea y configura una máquina virtual optimizada en Compute Engine que aloja una API REST construida en Express (Node.js), la cual recibe eventos continuos mediante peticiones HTTP POST estructuradas.</p>
+      </div>
+      <div class="card">
+        <h3>Enriquecimiento de Mensajes</h3>
+        <p>El servidor valida instantáneamente la estructura del JSON entrante, calculando de forma dinámica métricas operacionales clave y cruzando los IDs geográficos antes de pasarlo a la red de mensajería.</p>
+      </div>
+      <div class="card">
+        <h3>Aislamiento con Dead Letter</h3>
+        <p>Los eventos que no logran superar el esquema o presentan inconsistencias lógicas graves son descartados del flujo principal y enviados a un tópico de contingencia Dead Letter para resguardar la pureza de la data.</p>
+      </div>
+    </div>
+
+    <div class="image-placeholder" style="height: 400px;">
+      <img src="ingesta.png" style="height: 100%;" alt="Ingesta de Datos e Interfaz del Servidor">
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>Diapositiva <strong>03</strong> de 08</span>
+    <span>2. Ingesta de datos</span>
+  </div>
+</section>
+
+
+<!-- SLIDE 4: LIMPIEZA, TRANSFORMACIÓN Y ALMACENAMIENTO (IL 3.2) -->
+<section id="transformacion">
+  <div class="slide-container">
+    <div class="slide-tag">Componente 03 · IL 3.2</div>
+    <h2 class="slide-title">Limpieza, Transformación y Staging</h2>
+    <p class="slide-desc">
+      Aplicación de reglas de calidad de datos, transformaciones analíticas en tránsito y el proceso de persistencia en el Data Warehouse.
+    </p>
+
+    <div class="content-grid">
+      <div class="card">
+        <h3>Reglas de Calidad</h3>
+        <p>Validaciones estrictas sobre la obligatoriedad de campos primarios, consistencia temporal de marcas de tiempo (pickup/dropoff) y positividad en montos de tarifas facturadas.</p>
+      </div>
+      <div class="card">
+        <h3>Métricas Calculadas</h3>
+        <p>Cálculo de atributos sintéticos: <code>trip_duration_min</code>, <code>fare_per_mile</code>, <code>tip_pct</code>, segregación temporal por <code>year</code>, <code>month</code>, <code>day_of_week</code>, <code>pickup_hour</code> y resolución de nombres de zonas.</p>
+      </div>
+      <div class="card">
+        <h3>Persistencia Híbrida</h3>
+        <p>Los datos enriquecidos se vuelcan automáticamente en la tabla intermedia <code>trips_stream_raw</code> en BigQuery de manera directa para minimizar latencias.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>Diapositiva <strong>04</strong> de 08</span>
+    <span>3. Limpieza, transformación y almacenamiento</span>
+  </div>
+</section>
+
+
+<!-- SLIDE 5: CONTROL DE PROCESOS -->
+<section id="control">
+  <div class="slide-container">
+    <div class="slide-tag">Componente 04</div>
+    <h2 class="slide-title">Control de Procesos y Deduplicación</h2>
+    <p class="slide-desc">
+      Mecanismos implementados para asegurar la idempotencia, consistencia e integridad referencial entre flujos concurrentes.
+    </p>
+
+    <div class="content-grid">
+      <div class="card">
+        <h3>Gestión de Errores</h3>
+        <p>Filtros preventivos combinados con alertas tempranas. El uso combinado de validaciones en código y tópicos paralelos asegura resiliencia total ante formatos corruptos.</p>
+      </div>
+      <div class="card">
+        <h3>Deduplicación de Eventos</h3>
+        <p>Uso de un <code>trip_id</code> determinístico combinado con una llave compuesta <code>composite_id</code>. Permite mitigar el riesgo de duplicados por retransmisiones de red de Pub/Sub.</p>
+      </div>
+      <div class="card">
+        <h3>Trazabilidad Total</h3>
+        <p>Monitoreo activo de la salud del pipeline y del rendimiento de la inyección a través de la exposición de métricas internas en el endpoint especializado <code>/control-ejecucion</code>.</p>
+      </div>
+      <div class="card">
+        <h3>Estrategia MERGE</h3>
+        <p>Una consulta programada ejecuta operaciones MERGE recurrentes cada 5 minutos, uniendo la data en streaming de trips_stream_raw con la tabla maestra unificada <code>main_trips</code>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>Diapositiva <strong>05</strong> de 08</span>
+    <span>4. Control de procesos</span>
+  </div>
+</section>
+
+
+<!-- SLIDE 6: OPTIMIZACIÓN -->
+<section id="optimizacion">
+  <div class="slide-container">
+    <div class="slide-tag">Componente 05</div>
+    <h2 class="slide-title">Optimización del Data Warehouse</h2>
+    <p class="slide-desc">
+      Resolución de cuellos de botella detectados durante fases de estrés y escalabilidad del almacén analítico.
+    </p>
+
+    <div class="content-grid" style="grid-template-columns: 1fr 1fr;">
+      <div class="card">
+        <h3>Diagnóstico del Problema</h3>
+        <p>Durante los despliegues iniciales, se detectó que la sentencia periódica <code>MERGE</code> realizaba escaneos completos (Full Table Scans) sobre la tabla de producción, elevando los costos financieros y de cómputo de manera exponencial a medida que crecía el histórico.</p>
+      </div>
+      <div class="card">
+        <h3>Arquitectura de Solución Aplicada</h3>
+        <p>Se reestructuró la tabla principal <code>main_trips</code> aplicando:</p>
+        <ul style="margin-left: 20px; margin-top: 10px; color: #AAA; font-size: 13px; line-height: 1.6;">
+          <li><strong>Particionamiento:</strong> Segmentación física por día basada en la fecha del viaje.</li>
+          <li><strong>Clustering:</strong> Agrupación lógica por las dimensiones de alta consulta <code>PULocationID</code> y <code>DOLocationID</code>.</li>
+          <li><strong>Políticas de Seguridad:</strong> Activación estricta del parámetro <code>require_partition_filter</code> para bloquear consultas ineficientes.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="image-placeholder" style="height: 140px;">
+      <img src="Optimización.png" alt="Métricas de Optimización en BigQuery">
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>Diapositiva <strong>06</strong> de 08</span>
+    <span>5. Optimización</span>
+  </div>
+</section>
+
+
+<!-- SLIDE 7: DASHBOARD EN TIEMPO REAL (LOOKER STUDIO EMBEDDED) -->
+<section id="dashboard-slide">
+  <div class="slide-container">
+    <div class="slide-tag">Componente 06 · IL 3.3</div>
+    <h2 class="slide-title">Dashboard Analítico en Looker Studio (Live)</h2>
+    
+    <!-- Contenedor del Iframe con el link proporcionado e interactividad habilitada -->
+    <div class="dashboard-wrapper">
+      <iframe 
+        src="https://datastudio.google.com/embed/reporting/d5b7bfc1-9f3d-452b-9a84-eded44212400/page/p_hmxrtgc23d" 
+        allowfullscreen 
+        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+      </iframe>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>Diapositiva <strong>07</strong> de 08</span>
+    <span>6. Dashboard</span>
+  </div>
+</section>
+
+
+<!-- SLIDE 8: CONCLUSIONES -->
+<section id="conclusiones">
+  <div class="slide-container">
+    <div class="slide-tag">Cierre del Informe</div>
+    <h2 class="slide-title">Conclusiones del Proyecto</h2>
+    <p class="slide-desc" style="font-size: 18px; max-width: 900px; color: #EEE;">
+      La arquitectura híbrida y orientada a eventos implementada demuestra con éxito la viabilidad técnica de desplegar flujos robustos de ingesta, transformación estructural y analítica, y visualización integrada de grandes volúmenes de datos en streaming bajo el ecosistema de Google Cloud Platform.
+    </p>
+    
+    <div class="content-grid">
+      <div class="card" style="border-top: 3px solid var(--yellow);">
+        <h3>Simulación Exitosa</h3>
+        <p>La estrategia de simulación programada mediante el replay controlado de los archivos históricos en formato Parquet permitió emular un entorno real de producción streaming sin incurrir en costos redundantes de proveedores externos.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid var(--yellow);">
+        <h3>Gobernanza y Calidad</h3>
+        <p>Los esquemas de deduplicación determinística basados en llaves compuestas y el aislamiento rápido mediante colas de error (Dead Letter) garantizan la entrega de datos limpios, consistentes y listos para la toma de decisiones.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span>Diapositiva <strong>08</strong> de 08</span>
+    <span>Conclusiones Finales</span>
+  </div>
+</section>
+
+<script>
+// Script para mantener actualizado el estado activo del menú lateral según la sección visible
+const sections = document.querySelectorAll("section");
+const dots = document.querySelectorAll(".dot");
+
+const observerOptions = {
+  root: null,
+  threshold: 0.5
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const activeId = entry.target.getAttribute("id");
+      dots.forEach(dot => dot.classList.remove("active"));
+      
+      // Mapeo simple de id a índice para activar el dot
+      const index = Array.from(sections).indexOf(entry.target);
+      if (dots[index]) {
+        dots[index].classList.add("active");
+      }
+    }
+  });
+}, observerOptions);
+
+sections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>
